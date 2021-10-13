@@ -1,0 +1,13 @@
+"use strict";
+exports.__esModule = true;
+var hello_1 = require("./hello");
+var car_1 = require("./models/car");
+var name = "maherr";
+hello_1.HelloWorld(name);
+hello_1["default"]();
+var mycar = new car_1["default"]("peugoet", "blanche");
+console.log(mycar.getColor());
+console.log(mycar.getModel());
+mycar.move();
+mycar.stop();
+mycar.marcheAr();
