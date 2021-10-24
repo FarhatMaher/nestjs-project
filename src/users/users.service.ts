@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { UserNotFoundException } from './exceptions/user-not-found.exception';
 import { User } from './users.entity';
 
 @Injectable()
@@ -17,7 +18,7 @@ export class UsersService {
     const user = await this.userRepositry.findOne(id);
 
     if (!user) {
-      throw new Error('user does not exist');
+      throw new UserNotFoundException();
     }
     return user;
   }
@@ -30,7 +31,7 @@ export class UsersService {
     const userDb: User = await this.findOne(id);
 
     if (!userDb) {
-      throw new Error('user does not exist');
+      throw new UserNotFoundException();
     }
 
     userDb.username = user.username;
@@ -41,7 +42,7 @@ export class UsersService {
   async remove(id: number): Promise<void> {
     const userDb: User = await this.findOne(id);
     if (!userDb) {
-      throw new Error('user does not exist');
+      throw new UserNotFoundException();
     }
     await this.userRepositry.remove(userDb);
   }

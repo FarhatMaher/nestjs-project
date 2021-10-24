@@ -3,11 +3,13 @@ import {
   Controller,
   Delete,
   Get,
+  InternalServerErrorException,
   NotFoundException,
   Param,
   Post,
   Put
 } from '@nestjs/common';
+import { UserNotFoundException } from './exceptions/user-not-found.exception';
 import { User } from './users.entity';
 import { UsersService } from './users.service';
 
@@ -26,7 +28,10 @@ export class UsersController {
       const user = await this.usersService.findOne(id);
       return user;
     } catch (error) {
-      throw new NotFoundException();
+      if (error instanceof UserNotFoundException) {
+        throw new NotFoundException();
+      }
+      throw new InternalServerErrorException();
     }
   }
 
@@ -36,7 +41,10 @@ export class UsersController {
       await this.usersService.create(user);
       return 'user created succcefully';
     } catch (error) {
-      throw new NotFoundException();
+      if (error instanceof UserNotFoundException) {
+        throw new NotFoundException();
+      }
+      throw new InternalServerErrorException();
     }
   }
 
@@ -46,7 +54,10 @@ export class UsersController {
       await this.usersService.update(id, user);
       return 'user updated succcefully';
     } catch (error) {
-      throw new NotFoundException();
+      if (error instanceof UserNotFoundException) {
+        throw new NotFoundException();
+      }
+      throw new InternalServerErrorException();
     }
   }
 
@@ -56,7 +67,10 @@ export class UsersController {
       await this.usersService.remove(id);
       return 'user deleted succcefully';
     } catch (error) {
-      throw new NotFoundException();
+      if (error instanceof UserNotFoundException) {
+        throw new NotFoundException();
+      }
+      throw new InternalServerErrorException();
     }
   }
 }
