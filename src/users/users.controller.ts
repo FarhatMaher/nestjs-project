@@ -7,25 +7,25 @@ import {
   NotFoundException,
   Param,
   Post,
-  Put
+  Put,
+  UseGuards
 } from '@nestjs/common';
 import { IUsersService } from 'src/users/iusers.service';
+import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { UserNotFoundException } from './exceptions/user-not-found.exception';
 import { User } from './users.entity';
-
-
-
-
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: IUsersService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     return await this.usersService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: number) {
     try {
@@ -51,7 +51,7 @@ export class UsersController {
       throw new InternalServerErrorException();
     }
   }
-
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(@Param('id') id: number, @Body() user: User) {
     try {
@@ -64,7 +64,7 @@ export class UsersController {
       throw new InternalServerErrorException();
     }
   }
-
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: number) {
     try {
