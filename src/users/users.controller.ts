@@ -9,13 +9,17 @@ import {
   Post,
   Put
 } from '@nestjs/common';
+import { IUsersService } from 'src/users/iusers.service';
 import { UserNotFoundException } from './exceptions/user-not-found.exception';
 import { User } from './users.entity';
-import { UsersService } from './users.service';
+
+
+
+
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: IUsersService) {}
 
   @Get()
   async findAll() {

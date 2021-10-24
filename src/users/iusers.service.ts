@@ -10,6 +10,13 @@ export abstract class IUsersService {
    */
 
   abstract findOne(id: number): Promise<User>;
+
+  /**
+   * return user by id
+   * @param id user id
+   */
+
+  abstract findByUsername(username: string): Promise<User>;
   /**
    * add new user
    * @param user user to create
