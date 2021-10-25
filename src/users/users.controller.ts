@@ -8,11 +8,14 @@ import {
   Param,
   Post,
   Put,
-  UseGuards
+  UseGuards,
+  UsePipes
 } from '@nestjs/common';
 import { IUsersService } from 'src/users/iusers.service';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
+import { UserCreateDto } from './dto/user-create.dto';
 import { UserNotFoundException } from './exceptions/user-not-found.exception';
+import { ValidationPipe } from './pipes/validation.pipe';
 import { User } from './users.entity';
 
 @Controller('users')
@@ -26,6 +29,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @UsePipes(ValidationPipe)
   @Get(':id')
   async findOne(@Param('id') id: number) {
     try {
@@ -40,8 +44,9 @@ export class UsersController {
   }
 
   @Post()
-  async create(@Body() user: User) {
+  async create(@Body() userCreateDto: UserCreateDto) {
     try {
+      const user = <User>userCreateDto;
       await this.usersService.create(user);
       return 'user created succcefully';
     } catch (error) {
